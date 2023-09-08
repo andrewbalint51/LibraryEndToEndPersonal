@@ -5,7 +5,6 @@ import com.library.pages.BookPage;
 import com.library.pages.LoginPage;
 import com.library.utility.BrowserUtil;
 import com.library.utility.DB_Util;
-import com.library.utility.Driver;
 import com.library.utility.LibraryAPI_Util;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
@@ -16,20 +15,15 @@ import io.restassured.response.Response;
 import io.restassured.specification.RequestSpecification;
 import org.junit.Assert;
 import org.openqa.selenium.Keys;
-import org.openqa.selenium.support.ui.ExpectedCondition;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
 
-import java.time.Duration;
 import java.util.HashMap;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
 import static io.restassured.RestAssured.*;
 import static org.hamcrest.Matchers.*;
 
-public class ApiStepDefs {
+public class LibraryStepDefs {
 
 
     String token; //API Token for logging in
@@ -243,7 +237,7 @@ public class ApiStepDefs {
         BrowserUtil.waitForVisibility(loginPage.loginButton, 20);
         loginPage.login(email, password);
 
-        BrowserUtil.waitFor(3);
+        BrowserUtil.waitForVisibility(bookPage.accountHolderName, 20);
         Assert.assertTrue(bookPage.accountHolderName.isDisplayed());
         System.out.println("Login verified....");
 
@@ -254,9 +248,6 @@ public class ApiStepDefs {
 
         String actualUserFullName = bookPage.accountHolderName.getText();
         String expectedUserFullName = jsonPath.getString("full_name");
-
-        System.out.println("actualUserFullName = " + actualUserFullName);
-        System.out.println("expectedUserFullName = " + expectedUserFullName);
 
         Assert.assertEquals(expectedUserFullName, actualUserFullName);
     }
